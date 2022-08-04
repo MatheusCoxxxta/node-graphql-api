@@ -16,9 +16,22 @@ const RootQuery = new GraphQLObjectType({
   fields: {
     getAllUsers: {
       type: new GraphQLList(UserType),
-      args: { id: { type: GraphQLInt } },
       resolve(parent, args) {
         return usersList;
+      },
+    },
+    getUserById: {
+      type: UserType,
+      args: { id: { type: GraphQLInt } },
+      resolve(parent, args) {
+        return usersList.find((user) => user.id === args.id);
+      },
+    },
+    getUserByName: {
+      type: UserType,
+      args: { name: { type: GraphQLString } },
+      resolve(parent, { name }: { name: string }) {
+        return usersList.find((user) => user.firstName.includes(name));
       },
     },
   },
